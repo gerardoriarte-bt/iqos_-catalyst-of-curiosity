@@ -3,8 +3,13 @@ import cors from 'cors';
 import path from 'path';
 import OpenAI from 'openai';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
+// Fix for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '.env.local') });
 
 const app = express();
 const port = process.env.PORT || 3000;
