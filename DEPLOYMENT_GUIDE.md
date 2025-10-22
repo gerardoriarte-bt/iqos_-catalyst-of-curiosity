@@ -74,7 +74,7 @@ module.exports = {
 ```nginx
 server {
     listen 80;
-    server_name 18.219.75.63 _;
+    server_name iqos.buentipo.com www.iqos.buentipo.com;
     
     location / {
         proxy_pass http://localhost:3000;
@@ -121,15 +121,15 @@ pm2 status
 pm2 logs iqos-catalyst
 
 # Test API
-curl http://18.219.75.63/api/health
+curl https://iqos.buentipo.com/api/health
 
 # Test application
-curl http://18.219.75.63
+curl https://iqos.buentipo.com
 ```
 
 ## 🌐 Final URL
 Once deployed, your application will be available at:
-**http://18.219.75.63**
+**https://iqos.buentipo.com**
 
 ## 📞 Support
 If you encounter any issues, check:

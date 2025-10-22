@@ -56,7 +56,7 @@ pm2 startup
 sudo tee /etc/nginx/sites-available/iqos-catalyst << 'EOF'
 server {
     listen 80;
-    server_name 18.219.75.63 _;
+    server_name iqos.buentipo.com www.iqos.buentipo.com;
     
     location / {
         proxy_pass http://localhost:3000;
@@ -102,6 +102,6 @@ echo "🔍 Testing API:"
 curl -s http://localhost:3000/api/health || echo "API not responding"
 
 echo "✅ Installation completed successfully!"
-echo "🌐 Application available at: http://18.219.75.63"
+echo "🌐 Application available at: https://iqos.buentipo.com"
 echo "📊 Check status with: pm2 status"
 echo "📋 View logs with: pm2 logs iqos-catalyst"
