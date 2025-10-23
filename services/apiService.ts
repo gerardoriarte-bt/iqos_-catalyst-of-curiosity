@@ -1,7 +1,7 @@
 import { Brief, Idea } from '../types';
 
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://iqos.buentipo.com/api' 
+  ? 'http://18.117.222.96/api' 
   : 'http://localhost:3001/api';
 
 export const generateMarketingIdeas = async (brief: Brief): Promise<Idea[]> => {
