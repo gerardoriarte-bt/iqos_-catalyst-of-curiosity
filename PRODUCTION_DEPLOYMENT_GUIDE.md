@@ -6,6 +6,12 @@
 
 El proyecto está completamente preparado para despliegue en producción con las siguientes características:
 
+### 🌐 **Configuración de Dominio**
+- **Servidor**: 18.219.75.63 (EC2 AWS)
+- **Dominio**: iqos.buentipo.com
+- **Certificado SSL**: Let's Encrypt (configuración automática)
+- **Protocolo**: HTTPS con redirección automática desde HTTP
+
 ### ✅ **Aspectos Técnicos Completados**
 - ✅ Build exitoso sin errores críticos
 - ✅ Dependencias instaladas y actualizadas
@@ -55,49 +61,77 @@ npm run build
 npm run preview
 ```
 
-## 🌐 Opciones de Despliegue
+## 🚀 **Despliegue Rápido**
 
-### **Opción 1: Vercel (Recomendado)**
+### **Opción 1: Despliegue Automático (Recomendado)**
+
 ```bash
-# Instalar Vercel CLI
-npm i -g vercel
+# 1. Ejecutar script de despliegue
+./deploy-production.sh
 
-# Desplegar
-vercel --prod
+# 2. Configurar SSL (después del despliegue)
+./setup-ssl.sh
 
-# Configurar variables de entorno en dashboard de Vercel
+# 3. Verificar estado
+./diagnose-deployment.sh
 ```
 
-### **Opción 2: Netlify**
+### **Opción 2: Despliegue Manual**
+
 ```bash
-# Instalar Netlify CLI
-npm i -g netlify-cli
-
-# Desplegar
-netlify deploy --prod
-
-# Configurar variables de entorno en dashboard de Netlify
-```
-
-### **Opción 3: GitHub Pages**
-```bash
-# Instalar gh-pages
-npm install --save-dev gh-pages
-
-# Agregar script al package.json
-"deploy": "gh-pages -d dist"
-
-# Desplegar
-npm run deploy
-```
-
-### **Opción 4: Servidor Propio**
-```bash
-# Construir proyecto
+# 1. Construir proyecto
 npm run build
 
-# Servir archivos estáticos desde carpeta 'dist'
-# Usar nginx, Apache, o cualquier servidor web
+# 2. Crear paquete de despliegue
+tar -czf iqos-catalyst-production.tar.gz dist/ package.json package-lock.json
+
+# 3. Subir al servidor
+scp -i iqos.pem iqos-catalyst-production.tar.gz ubuntu@18.219.75.63:/home/ubuntu/
+
+# 4. Conectar y configurar
+ssh -i iqos.pem ubuntu@18.219.75.63
+```
+
+## 🌐 **Configuración de Dominio**
+
+### **DNS Configuration**
+Asegúrate de que tu dominio `iqos.buentipo.com` apunte a la IP `18.219.75.63`:
+
+```bash
+# Verificar DNS
+nslookup iqos.buentipo.com
+dig iqos.buentipo.com
+```
+
+### **SSL Certificate**
+El certificado SSL se configura automáticamente con Let's Encrypt:
+
+```bash
+# Configurar SSL
+sudo certbot --nginx -d iqos.buentipo.com
+```
+
+## 🔧 **Comandos de Mantenimiento**
+
+### **Monitoreo**
+```bash
+# Ver estado de la aplicación
+ssh -i iqos.pem ubuntu@18.219.75.63 'pm2 status'
+
+# Ver logs
+ssh -i iqos.pem ubuntu@18.219.75.63 'pm2 logs iqos-catalyst'
+
+# Reiniciar aplicación
+ssh -i iqos.pem ubuntu@18.219.75.63 'pm2 restart iqos-catalyst'
+```
+
+### **Diagnóstico**
+```bash
+# Ejecutar diagnóstico completo
+./diagnose-deployment.sh
+
+# Verificar conectividad
+curl -I https://iqos.buentipo.com
 ```
 
 ## 📊 Métricas de Rendimiento
